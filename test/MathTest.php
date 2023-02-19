@@ -4,6 +4,6 @@ class MathTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testAdd(){
-        $this->assertEquals(4,\Ylamalem\EstKenitra\Math::add(2,3));
+        $this->assertEquals(5,\Ylamalem\EstKenitra\Math::add(2,3));
     }
 }
