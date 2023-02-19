@@ -1,0 +1,41 @@
+name: Continuous-Integration
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest # Get the latest ubuntu stable version (This is bad practice as we want to keep the the versions pinned)
+    timeout-minutes: 10 # Cancel the CI workflow took more then 10 min
+
+    steps:
+      - name: "Copy code" # Copy code to ubuntu machine
+        uses: actions/checkout@v3
+        # Action Documentation : https://github.com/actions/checkout
+
+      - name: Set up composer # Install the composer tool
+        uses: php-actions/composer@v6
+        # Action Documentation : https://github.com/php-actions/composer
+
+      - name: Run Tests # Run the php unite tests
+        uses: php-actions/phpunit@master
+        env:
+          TEST_NAME: Scarlett
+
+        with:
+          bootstrap: vendor/autoload.php
+          configuration: test/phpunit.xml
+        # Action Documentation : https://github.com/php-actions/phpunit
+
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          author_name: "Integration workflow"
+          icon_url: "https://cdn3.iconfinder.com/data/icons/popular-services-brands/512/github-512.png"
+          fields: repo,message,commit,author,action,eventName,ref,workflow
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+        if: always() # Pick up events even if the job fails or is canceled.
