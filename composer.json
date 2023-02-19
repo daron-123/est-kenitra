@@ -1,0 +1,11 @@
+{
+    "name": "ylamalem/est-kenitra",
+    "require": {
+        "phpunit/phpunit": "^10.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ylamalem\\EstKenitra\\": "src/"
+        }
+    }
+}
