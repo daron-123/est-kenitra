@@ -29,7 +29,14 @@ jobs:
           bootstrap: vendor/autoload.php
           configuration: test/phpunit.xml
         # Action Documentation : https://github.com/php-actions/phpunit
-
+      - name: Push to docker hub
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: yasserlamalem/est-kenitra
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          
       - uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
